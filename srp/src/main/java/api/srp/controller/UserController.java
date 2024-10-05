@@ -15,32 +15,36 @@ import api.srp.model.entity.User;
 import api.srp.model.repository.UserRepository;
 
 @RestController
-@RequestMapping(path="/user")
+@RequestMapping(path = "/user")
 public class UserController {
-	
-	private UserRepository repository;//var para manipular a dependencia MongoRepositoryORM
-	
-    private PasswordEncoder password;//var para dar hash na senha usando a dependencia passwordEncoder..
-	
-    //dando a injeção de dependencia nas depencias necessarias..
-	@Autowired
-	public UserController(UserRepository repositoryParam, PasswordEncoder passwordParam) {
-		 this.repository = repositoryParam;
-		 this.password = passwordParam;
-	}
-	
-	@GetMapping("/")
-	public List<User> listAll() {
-		return repository.findAll();
-	}
-	
-	@PostMapping("/register")
-	public User insert(@RequestBody User user) {
-		
-		user.setSenha(password.encode( user.getSenha() ));
-		
-		return repository.save(user);
-		
-	}
-	
+
+    private UserRepository repository;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserController(UserRepository repository, PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+	    @PostMapping("/register")
+	    public String register(@RequestBody User user) {
+	        
+	        
+	        if(repository.findByEmail(user.getEmail()) != null) {
+	        	
+	        	return "Email já utilizado. Tente novamente com outro email.";
+	        	
+	        }else {
+	        	
+	        	user.setSenha(user.getSenha(), passwordEncoder);
+	        	
+	        	repository.save(user);
+	        	
+	        	return "Usuário registrado com sucesso!";
+	        	
+	        }
+	        
+	    }
+
 }
