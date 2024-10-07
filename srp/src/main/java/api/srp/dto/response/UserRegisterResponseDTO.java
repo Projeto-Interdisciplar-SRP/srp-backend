@@ -13,7 +13,8 @@ public class UserRegisterResponseDTO {
     private String telefone;
     
 	public UserRegisterResponseDTO(String id, String nome, String email, String rua, String bairro, String cidade, String cpf, String rg, String telefone) {
-
+		
+		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.rua = rua;
