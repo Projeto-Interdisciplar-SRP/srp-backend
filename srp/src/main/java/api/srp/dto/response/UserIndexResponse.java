@@ -1,30 +1,32 @@
 package api.srp.dto.response;
 
-public class LoginResponseDTO {
+public class UserIndexResponse {
 	
 	private String id;
-	private String name;
+	private String nome;
 	private String email;
 	
-	public LoginResponseDTO(String id, String name, String email) {
+	public UserIndexResponse(String id, String nome, String email) {
 		
 		this.id = id;
-		this.name = name;
+		this.nome = nome;
 		this.email = email;
 		
-		
 	}
-	
+
 	public String getId() {
 		return id;
+	}
+
+	public String getNome() {
+		return nome;
 	}
 
 	public String getEmail() {
 		return email;
 	}
+
+
 	
-	public String getName() {
-		return name;
-	}
 	
 }

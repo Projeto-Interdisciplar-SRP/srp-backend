@@ -1,12 +1,12 @@
 package api.srp.dto.response;
 
-public class LoginResponseDTO {
-	
+public class UserRegisterResponseDTO {
+
 	private String id;
 	private String name;
 	private String email;
 	
-	public LoginResponseDTO(String id, String name, String email) {
+	public UserRegisterResponseDTO(String id, String name, String email) {
 		
 		this.id = id;
 		this.name = name;

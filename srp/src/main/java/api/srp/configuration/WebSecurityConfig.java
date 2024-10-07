@@ -4,11 +4,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class WebSecurityConfig {
+@EnableWebMvc
+public class WebSecurityConfig implements WebMvcConfigurer {
+	
+    //LIBERA O CORS
+    public void addCorsMappings(CorsRegistry registry) {//addCorsMappings() - é um metodo do WebMvcConfigurer que implementamos nessa classe nós acessamos ele e utilizamos para mexer em coisas em relção ao cors...
+    	
+    	registry.addMapping("/**") //libera o uso de todas as rotas (depois de barra todo mundo "/**")
+    	.allowedOrigins("*"); //libera acesso de todas as origens
+    	
+    }
 	
 	/* OQUE É UM @Bean ?
 	 * Um Bean no Spring é basicamente um componente da sua aplicação que 
@@ -33,4 +45,5 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+    
 }

@@ -1,5 +1,7 @@
 package api.srp.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.srp.dto.request.LoginRequestDTO;
 import api.srp.dto.response.LoginResponseDTO;
+import api.srp.dto.response.WrapperResponseDTO;
 import api.srp.model.entity.User;
 import api.srp.model.repository.UserRepository;
 
@@ -26,28 +29,32 @@ public class AuthController {
 		 this.passwordEncoder = passwordEncoder;
 	}
 	
-	@PostMapping("/")
-	public LoginResponseDTO login(@RequestBody LoginRequestDTO login){
+	@PostMapping(value = { "", "/" })//value = diz o caminho da rota, pode ser mais de um
+	public WrapperResponseDTO<LoginResponseDTO> login(@RequestBody LoginRequestDTO login){
 		
 		User userFound = this.repo.findByEmail(login.getEmail());
 		
-		if(userFound != null) {
+		if(userFound != null) {	
 			
 			if(userFound.isPasswordMatching(login.getPassword(), passwordEncoder)) {
 				
-				LoginResponseDTO response = new LoginResponseDTO(userFound.getId(), userFound.getNome(),userFound.getEmail());
+				LoginResponseDTO loginData = new LoginResponseDTO(userFound.getId(), userFound.getNome(),userFound.getEmail());
+				
+				WrapperResponseDTO<LoginResponseDTO> response = new WrapperResponseDTO<LoginResponseDTO>(true, "Autenticado em " + (new Date()).getTime(), loginData);
 				
 				return response;
 				
 			}else {
 				
-				return null;
+				WrapperResponseDTO<LoginResponseDTO> response = new WrapperResponseDTO<LoginResponseDTO>(false, "Senha inválida.", null);
 				
-			}
+				return response;			}
 			
 		}else {
 			
-			return null;
+			WrapperResponseDTO<LoginResponseDTO> response = new WrapperResponseDTO<LoginResponseDTO>(false, "Esse email não é utilizado.", null);
+			
+			return response;
 			
 		}
 		
