@@ -3,7 +3,7 @@ package api.srp.dto.request;
 public class LoginRequestDTO {
 
 	private String email;
-	private String password;
+	private String senha;
 	
 	public String getEmail() {
 		return email;
@@ -13,12 +13,12 @@ public class LoginRequestDTO {
 		this.email = email;
 	}
 	
-	public String getPassword() {
-		return password;
+	public String getSenha() {
+		return senha;
 	}
 	
-	public void setPassword(String password) {
-		this.password = password;
+	public void setSenha(String password) {
+		this.senha = password;
 	}
 	
 }

@@ -1,30 +1,61 @@
 package api.srp.dto.response;
 
 public class UserRegisterResponseDTO {
-
-	private String id;
-	private String name;
-	private String email;
 	
-	public UserRegisterResponseDTO(String id, String name, String email) {
-		
-		this.id = id;
-		this.name = name;
+	private String id;
+    private String nome;
+    private String email;
+    private String rua;
+	private String bairro;
+    private String cidade;
+    private String cpf;
+    private String rg;
+    private String telefone;
+    
+	public UserRegisterResponseDTO(String id, String nome, String email, String rua, String bairro, String cidade, String cpf, String rg, String telefone) {
+
+		this.nome = nome;
 		this.email = email;
-		
+		this.rua = rua;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.cpf = cpf;
+		this.rg = rg;
+		this.telefone = telefone;
 		
 	}
 	
+	public String getNome() {
+		return nome;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public String getRua() {
+		return rua;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+	public String getCidade() {
+		return cidade;
+	}
+	public String getCpf() {
+		return cpf;
+	}
+	public String getRg() {
+		return rg;
+	}
+	public String getTelefone() {
+		return telefone;
+	}
+
 	public String getId() {
 		return id;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-	
-	public String getName() {
-		return name;
-	}
+    
+    
 	
 }

@@ -47,9 +47,9 @@ public class UserController {
         	
         	repository.save(user);
         	
-        	UserRegisterResponseDTO userRegisterData = new UserRegisterResponseDTO(user.getId(), user.getNome(), user.getEmail());
+        	UserRegisterResponseDTO userRegisterData = new UserRegisterResponseDTO(user.getId(), user.getNome(),user.getEmail(), user.getRua(), user.getBairro(), user.getCidade(), user.getCpf(), user.getRg(), user.getTelefone());
         	
-        	WrapperResponseDTO<UserRegisterResponseDTO> response = new WrapperResponseDTO<UserRegisterResponseDTO>(false, "Usuário registrado com sucesso!", userRegisterData);
+        	WrapperResponseDTO<UserRegisterResponseDTO> response = new WrapperResponseDTO<UserRegisterResponseDTO>(true, "Usuário registrado com sucesso!", userRegisterData);
         	
         	return response;
         	
@@ -65,12 +65,8 @@ public class UserController {
     	List<UserIndexResponse> listResponse = new ArrayList<UserIndexResponse>();
     	
     	for (User itUser : listUser) {
-			
-    		String currentName = itUser.getNome();
-    		String currentId = itUser.getId();
-    		String currentEmail = itUser.getEmail();
-    		
-    		UserIndexResponse currentUser = new UserIndexResponse(currentId, currentName, currentEmail);
+
+    		UserIndexResponse currentUser = new UserIndexResponse(itUser.getId(), itUser.getNome(),itUser.getEmail(), itUser.getRua(), itUser.getBairro(), itUser.getCidade(), itUser.getCpf(), itUser.getRg(), itUser.getTelefone());
     		
     		listResponse.add(currentUser);
     		

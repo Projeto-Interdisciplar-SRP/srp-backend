@@ -12,6 +12,12 @@ public class User {
     private String nome;
     private String email;
     private String senha;
+    private String rua;
+	private String bairro;
+    private String cidade;
+    private String cpf;
+    private String rg;
+    private String telefone;
     
     public User(String nome, String email, String senha) {
         this.nome = nome;
@@ -19,19 +25,13 @@ public class User {
         this.senha = senha;
     }
 
-    
-
     public String getId() {
 		return id;
 	}
 
-
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
-
 
 	public String getNome() {
         return nome;
@@ -51,6 +51,79 @@ public class User {
 
     public String getSenha() {
 		return senha;
+	}
+    
+    public String getRua() {
+		return rua;
+	}
+
+
+	public void setRua(String rua) {
+		this.rua = rua;
+	}
+
+
+
+	public String getBairro() {
+		return bairro;
+	}
+
+
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+
+
+	public String getCidade() {
+		return cidade;
+	}
+
+
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+
+
+	public String getCpf() {
+		return cpf;
+	}
+
+
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+
+
+	public String getRg() {
+		return rg;
+	}
+
+
+
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+
+
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
     
     // Método de verificação da senha

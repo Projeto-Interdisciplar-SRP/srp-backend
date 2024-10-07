@@ -36,9 +36,9 @@ public class AuthController {
 		
 		if(userFound != null) {	
 			
-			if(userFound.isPasswordMatching(login.getPassword(), passwordEncoder)) {
+			if(userFound.isPasswordMatching(login.getSenha(), passwordEncoder)) {
 				
-				LoginResponseDTO loginData = new LoginResponseDTO(userFound.getId(), userFound.getNome(),userFound.getEmail());
+				LoginResponseDTO loginData = new LoginResponseDTO(userFound.getId(), userFound.getNome(),userFound.getEmail(), userFound.getRua(), userFound.getBairro(), userFound.getCidade(), userFound.getCpf(), userFound.getRg(), userFound.getTelefone());
 				
 				WrapperResponseDTO<LoginResponseDTO> response = new WrapperResponseDTO<LoginResponseDTO>(true, "Autenticado em " + (new Date()).getTime(), loginData);
 				
