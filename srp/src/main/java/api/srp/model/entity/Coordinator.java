@@ -4,10 +4,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Document(collection = "user")
-public class User {
-    
-    @Id
+@Document(collection="coordinator")
+public class Coordinator {
+
+	@Id
     private String id;
     private String nome;
     private String email;
@@ -19,7 +19,7 @@ public class User {
     private String rg;
     private String telefone;
     
-    public User(String nome, String email, String senha) {
+    public Coordinator(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -135,4 +135,7 @@ public class User {
     public void setSenha(String senha, PasswordEncoder encoder) {
         this.senha = encoder.encode(senha);
     }
+    
+    
+	
 }
