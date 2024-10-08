@@ -12,7 +12,6 @@ public class Bus {
 	private String placa_onibus;
 	
 	public Bus(String numero, String placa_onibus) {
-		super();
 		this.numero = numero;
 		this.placa_onibus = placa_onibus;
 	}
