@@ -11,11 +11,11 @@ import api.srp.dto.response.ReservationResponseDTO;
 @RequestMapping("/reservation")
 public class Reservation {
 
-	@PostMapping(value={"/register", "register"})
-	public ReservationResponseDTO register() {
+//	@PostMapping(value={"/register", "register"})
+//	public ReservationResponseDTO register() {
 		
 		
 		
-	}
+//	}
 	
 }
