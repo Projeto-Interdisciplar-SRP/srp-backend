@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
+import api.srp.dto.request.ChangePasswordDTO;
 import api.srp.dto.request.UserUpdateRequestDTO;
 import api.srp.dto.response.LoginResponseDTO;
 import api.srp.dto.response.UserIndexResponse;
@@ -73,29 +74,30 @@ public class UserController {
     }
     
     @PatchMapping("/change-password")
-    public WrapperResponseDTO<Void> changePassword(@RequestPart("id_user") String id_user, @RequestPart("current_password") String currentPassword, @RequestPart("new_password") String newPassword) {
+    public WrapperResponseDTO<Void> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
 
-        
-        User userFound = this.repository.findById(id_user).orElse(null);
+        // Encontra o usuário pelo ID fornecido
+        User userFound = this.repository.findById(changePasswordDTO.getId_usuario()).orElse(null);
 
         if (userFound != null) {
             
-            if (userFound.isPasswordMatching(currentPassword, passwordEncoder)) {
+            // Verifica se a senha atual corresponde à senha salva
+            if (userFound.isPasswordMatching(changePasswordDTO.getSenha_atual(), passwordEncoder)) {
                 
-                userFound.setSenha(passwordEncoder.encode(newPassword));
+                // Define a nova senha após codificação
+                userFound.setSenha(passwordEncoder.encode(changePasswordDTO.getNova_senha()));
                 this.repository.save(userFound);
 
-                WrapperResponseDTO<Void> response = new WrapperResponseDTO<>(true, "Senha alterada com sucesso.", null);
-                return response;
+                // Retorna resposta de sucesso
+                return new WrapperResponseDTO<>(true, "Senha alterada com sucesso!", null);
             } else {
-                WrapperResponseDTO<Void> response = new WrapperResponseDTO<>(false, "Senha atual inválida.", null);
-                return response;
+                // Retorna resposta de senha atual inválida
+                return new WrapperResponseDTO<>(false, "Senha atual inválida.", null);
             }
         } else {
-            WrapperResponseDTO<Void> response = new WrapperResponseDTO<>(false, "Usuário não encontrado.", null);
-            return response;
+            // Retorna resposta de usuário não encontrado
+            return new WrapperResponseDTO<>(false, "Usuário não encontrado.", null);
         }
-        
     }
     
     @PutMapping("/edit")
