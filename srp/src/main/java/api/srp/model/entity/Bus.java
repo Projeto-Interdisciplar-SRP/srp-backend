@@ -11,9 +11,19 @@ public class Bus {
 	private String numero;
 	private String placa_onibus;
 	
-	public Bus(String numero, String placa_onibus) {
+	public Bus(String id, String numero, String placa_onibus) {
+		super();
+		this.id = id;
 		this.numero = numero;
 		this.placa_onibus = placa_onibus;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getNumero() {
@@ -31,6 +41,8 @@ public class Bus {
 	public void setPlaca_onibus(String placa_onibus) {
 		this.placa_onibus = placa_onibus;
 	}
+	
+	
 	
 	
 	

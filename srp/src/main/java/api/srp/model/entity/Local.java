@@ -12,16 +12,14 @@ public class Local {
 	private String rua;
 	private String bairro;
     private String cidade;
-    private String id_coordenador;
     
-	public Local(String id, String nome, String rua, String bairro, String cidade, String id_coordenador) {
+	public Local(String id, String nome, String rua, String bairro, String cidade) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.rua = rua;
 		this.bairro = bairro;
 		this.cidade = cidade;
-		this.id_coordenador = id_coordenador;
 	}
 
 	public String getId() {
@@ -62,14 +60,6 @@ public class Local {
 
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
-	}
-
-	public String getId_coordenador() {
-		return id_coordenador;
-	}
-
-	public void setId_coordenador(String id_coordenador) {
-		this.id_coordenador = id_coordenador;
 	}
     
     

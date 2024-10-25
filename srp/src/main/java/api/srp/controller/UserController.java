@@ -22,6 +22,7 @@ import api.srp.dto.response.LoginResponseDTO;
 import api.srp.dto.response.UserIndexResponse;
 import api.srp.dto.response.UserRegisterResponseDTO;
 import api.srp.dto.response.WrapperResponseDTO;
+import api.srp.model.entity.Bus;
 import api.srp.model.entity.User;
 import api.srp.model.repository.UserRepository;
 
@@ -113,6 +114,17 @@ public class UserController {
     		return new WrapperResponseDTO<>(false, "Erro ao encontrar usuário.", null);
     	}
     	
+    }
+    
+    @GetMapping("/{id}")
+    public WrapperResponseDTO<User> getBusById(@PathVariable String id) {
+        Optional<User> user = repository.findById(id);
+        
+        if (user.isPresent()) {
+            return new WrapperResponseDTO<User>(true, "Usuário encontrado com sucesso!", user.get());
+        } else {
+            return new WrapperResponseDTO<>(false, "Usuário não encontrado!", null);
+        }
     }
     
     @GetMapping("/")
