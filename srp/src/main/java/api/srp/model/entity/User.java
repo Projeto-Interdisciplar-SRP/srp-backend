@@ -13,27 +13,36 @@ public class User {
     private String email;
     private String senha;
     private String rua;
-	private String bairro;
+    private String bairro;
     private String cidade;
     private String cpf;
     private String rg;
     private String telefone;
     
-    public User(String nome, String email, String senha) {
+    // Campo para definir se o usuário é comum (0) ou administrador (1)
+    private Integer adm;
+    
+    // ID da paróquia para administradores
+    private String id_paroquia;
+
+    public User(String nome, String email, String senha, Integer adm) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.adm = adm;
     }
 
+    // Getters e Setters
+
     public String getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getNome() {
+    public String getNome() {
         return nome;
     }
 
@@ -50,89 +59,85 @@ public class User {
     }
 
     public String getSenha() {
-		return senha;
-	}
-    
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public String getRua() {
-		return rua;
-	}
+        return rua;
+    }
 
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
 
-	public void setRua(String rua) {
-		this.rua = rua;
-	}
+    public String getBairro() {
+        return bairro;
+    }
 
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
 
+    public String getCidade() {
+        return cidade;
+    }
 
-	public String getBairro() {
-		return bairro;
-	}
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
 
+    public String getCpf() {
+        return cpf;
+    }
 
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
+    public String getRg() {
+        return rg;
+    }
 
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
 
+    public String getTelefone() {
+        return telefone;
+    }
 
-	public String getCidade() {
-		return cidade;
-	}
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
 
+    public Integer getAdm() {
+        return adm;
+    }
 
+    public void setAdm(Integer adm) {
+        this.adm = adm;
+    }
 
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
+    public String getIdParoquia() {
+        return id_paroquia;
+    }
 
+    public void setIdParoquia(String id_paroquia) {
+        this.id_paroquia = id_paroquia;
+    }
 
-
-	public String getCpf() {
-		return cpf;
-	}
-
-
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-
-
-	public String getRg() {
-		return rg;
-	}
-
-
-
-	public void setRg(String rg) {
-		this.rg = rg;
-	}
-
-
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-    
-    //metodo de verificação da senha
+    // Método de verificação da senha
     public boolean isPasswordMatching(String rawPassword, PasswordEncoder encoder) {
         return encoder.matches(rawPassword, this.senha);
     }
 
-	//metodo para codificar a senha e setar
+    // Método para codificar a senha e setar
     public void setSenha(String senha, PasswordEncoder encoder) {
         this.senha = encoder.encode(senha);
     }
+
 }
