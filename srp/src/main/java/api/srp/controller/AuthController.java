@@ -48,7 +48,8 @@ public class AuthController {
 				
 				WrapperResponseDTO<LoginResponseDTO> response = new WrapperResponseDTO<LoginResponseDTO>(false, "Senha inválida.", null);
 				
-				return response;			}
+				return response;			
+			}
 			
 		}else {
 			

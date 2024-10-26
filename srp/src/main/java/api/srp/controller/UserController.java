@@ -45,32 +45,38 @@ public class UserController {
     @PostMapping("/register")
     public WrapperResponseDTO<UserRegisterResponseDTO> register(@RequestBody User user) {
         
-        
+        // Check if email is already used
         if(repository.findByEmail(user.getEmail()) != null) {
-        	
-        	WrapperResponseDTO<UserRegisterResponseDTO> response = new WrapperResponseDTO<UserRegisterResponseDTO>(false, "Email já utilizado. Tente novamente com outro email.", null);
-        			
-        	return response;
-        	
-        }else {
-        	
-        	user.setSenha(user.getSenha(), passwordEncoder);
-        	
-            // Se o usuário não for admin (adm == 0), seta o idParoquia como null
-            if (user.getAdm() == 0) {
-                user.setIdParoquia(null);
-            }
-        	
-        	repository.save(user);
-        	
-        	UserRegisterResponseDTO userRegisterData = new UserRegisterResponseDTO(user.getId(), user.getNome(),user.getEmail(), user.getRua(), user.getBairro(), user.getCidade(), user.getCpf(), user.getRg(), user.getTelefone(), user.getAdm());
-        	
-        	WrapperResponseDTO<UserRegisterResponseDTO> response = new WrapperResponseDTO<UserRegisterResponseDTO>(true, "Usuário registrado com sucesso!", userRegisterData);
-        	
-        	return response;
-        	
+            return new WrapperResponseDTO<>(false, "Email já utilizado. Tente novamente com outro email.", null);
         }
+
+        // Set password using encoder
+        user.setSenha(user.getSenha(), passwordEncoder);
+
+        // Check if adm is null or zero
+        if (user.getAdm() == null || user.getAdm() == 0) {
+            user.setIdParoquia(null);
+        }
+
+        // Save the user
+        repository.save(user);
         
+        // Create response DTO with user data
+        UserRegisterResponseDTO userRegisterData = new UserRegisterResponseDTO(
+            user.getId(), 
+            user.getNome(), 
+            user.getEmail(), 
+            user.getRua(), 
+            user.getBairro(), 
+            user.getCidade(), 
+            user.getCpf(), 
+            user.getRg(), 
+            user.getTelefone(), 
+            user.getAdm()
+        );
+        
+        // Return successful response
+        return new WrapperResponseDTO<>(true, "Usuário registrado com sucesso!", userRegisterData);
     }
     
     @PatchMapping("/change-password")
