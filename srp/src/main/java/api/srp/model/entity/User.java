@@ -25,14 +25,24 @@ public class User {
     // ID da paróquia para administradores
     private String id_paroquia;
 
-    public User(String nome, String email, String senha, Integer adm) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.adm = adm;
-    }
+    public User(String id, String nome, String email, String senha, String rua, String bairro, String cidade,
+			String cpf, String rg, String telefone, Integer adm, String id_paroquia) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.rua = rua;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.cpf = cpf;
+		this.rg = rg;
+		this.telefone = telefone;
+		this.adm = adm;
+		this.id_paroquia = id_paroquia;
+	}
 
-    // Getters e Setters
+	// Getters e Setters
 
     public String getId() {
         return id;

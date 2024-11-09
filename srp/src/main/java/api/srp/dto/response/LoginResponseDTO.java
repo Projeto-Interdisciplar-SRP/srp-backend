@@ -12,8 +12,10 @@ public class LoginResponseDTO {
     private String rg;
     private String telefone;
     private Integer adm;
+    private String id_paroquia;
     
-	public LoginResponseDTO(String id, String nome, String email, String rua, String bairro, String cidade, String cpf, String rg, String telefone, Integer adm) {
+	public LoginResponseDTO(String id, String nome, String email, String rua, String bairro, String cidade, String cpf,
+			String rg, String telefone, Integer adm, String id_paroquia) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -25,6 +27,7 @@ public class LoginResponseDTO {
 		this.rg = rg;
 		this.telefone = telefone;
 		this.adm = adm;
+		this.id_paroquia = id_paroquia;
 	}
 
 	public String getId() {
@@ -106,6 +109,15 @@ public class LoginResponseDTO {
 	public void setAdm(Integer adm) {
 		this.adm = adm;
 	}
+
+	public String getId_paroquia() {
+		return id_paroquia;
+	}
+
+	public void setId_paroquia(String id_paroquia) {
+		this.id_paroquia = id_paroquia;
+	}
+	
     
 	
     

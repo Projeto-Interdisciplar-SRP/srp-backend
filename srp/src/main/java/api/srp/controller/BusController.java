@@ -13,6 +13,7 @@ import api.srp.model.repository.BusRepository;
 
 @RestController
 @RequestMapping("/bus")
+@CrossOrigin("*")
 public class BusController {
 
     @Autowired

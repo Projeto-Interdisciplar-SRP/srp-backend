@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import api.srp.model.repository.UserRepository;
 
 @RestController
 @RequestMapping(path="/auth")
+@CrossOrigin("*")
 public class AuthController {
 	
 	private UserRepository repo;//var para manipular a dependencia MongoRepositoryORM
@@ -38,7 +40,7 @@ public class AuthController {
 			
 			if(userFound.isPasswordMatching(login.getSenha(), passwordEncoder)) {
 				
-				LoginResponseDTO loginData = new LoginResponseDTO(userFound.getId(), userFound.getNome(),userFound.getEmail(), userFound.getRua(), userFound.getBairro(), userFound.getCidade(), userFound.getCpf(), userFound.getRg(), userFound.getTelefone(), userFound.getAdm());
+				LoginResponseDTO loginData = new LoginResponseDTO(userFound.getId(), userFound.getNome(),userFound.getEmail(), userFound.getRua(), userFound.getBairro(), userFound.getCidade(), userFound.getCpf(), userFound.getRg(), userFound.getTelefone(), userFound.getAdm(), userFound.getIdParoquia());
 				
 				WrapperResponseDTO<LoginResponseDTO> response = new WrapperResponseDTO<LoginResponseDTO>(true, "Autenticado em " + (new Date()).getTime(), loginData);
 				

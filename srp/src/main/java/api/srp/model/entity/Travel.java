@@ -12,8 +12,8 @@ public class Travel {
 	private String id;
 	private String id_ingresso;
 	private String	id_paroquia;
-	private Date data_partida;
 	private String id_onibus;
+	private Date data_partida;
 	
 	public Travel(String id, String id_ingresso, String id_paroquia, Date data_partida, String id_onibus) {
 		super();

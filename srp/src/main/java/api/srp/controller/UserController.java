@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.apache.catalina.filters.AddDefaultCharsetFilter.ResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ import api.srp.model.repository.UserRepository;
 
 @RestController
 @RequestMapping(path = "/user")
+@CrossOrigin("*")
 public class UserController {
 
     private UserRepository repository;
@@ -49,6 +51,12 @@ public class UserController {
         if(repository.findByEmail(user.getEmail()) != null) {
             return new WrapperResponseDTO<>(false, "Email já utilizado. Tente novamente com outro email.", null);
         }
+        
+        //tirar mascara do cpf
+        user.setCpf(user.getCpf().replaceAll("[^0-9]", ""));
+        
+        //tirar mascara do rg
+        user.setRg(user.getRg().replaceAll("[^0-9]", ""));
 
         // Set password using encoder
         user.setSenha(user.getSenha(), passwordEncoder);
@@ -72,7 +80,8 @@ public class UserController {
             user.getCpf(), 
             user.getRg(), 
             user.getTelefone(), 
-            user.getAdm()
+            user.getAdm(),
+            user.getIdParoquia()
         );
         
         // Return successful response
@@ -83,16 +92,16 @@ public class UserController {
     public WrapperResponseDTO<Void> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
 
         // Encontra o usuário pelo ID fornecido
-        User userFound = this.repository.findById(changePasswordDTO.getId_usuario()).orElse(null);
+        User foundUser = this.repository.findById(changePasswordDTO.getId_usuario()).orElse(null);
 
-        if (userFound != null) {
+        if (foundUser != null) {
             
             // Verifica se a senha atual corresponde à senha salva
-            if (userFound.isPasswordMatching(changePasswordDTO.getSenha_atual(), passwordEncoder)) {
+            if (foundUser.isPasswordMatching(changePasswordDTO.getSenha_atual(), passwordEncoder)) {
                 
                 // Define a nova senha após codificação
-                userFound.setSenha(passwordEncoder.encode(changePasswordDTO.getNova_senha()));
-                this.repository.save(userFound);
+                foundUser.setSenha(passwordEncoder.encode(changePasswordDTO.getNova_senha()));
+                this.repository.save(foundUser);
 
                 // Retorna resposta de sucesso
                 return new WrapperResponseDTO<>(true, "Senha alterada com sucesso!", null);
@@ -115,6 +124,13 @@ public class UserController {
     		
     		User foundUser = user.get();
     		
+            //tirar mascara do cpf
+            update.setCpf(foundUser.getCpf().replaceAll("[^0-9]", ""));
+            
+            //tirar mascara do rg
+            update.setRg(foundUser.getRg().replaceAll("[^0-9]", ""));
+
+    		
     		foundUser.setNome(update.getNome());
     		foundUser.setEmail(update.getEmail());
     		foundUser.setCpf(update.getCpf());
@@ -126,7 +142,7 @@ public class UserController {
     		
     		repository.save(foundUser);
     		
-    		LoginResponseDTO login = new LoginResponseDTO(foundUser.getId(), foundUser.getNome(),foundUser.getEmail(), foundUser.getRua(), foundUser.getBairro(), foundUser.getCidade(), foundUser.getCpf(), foundUser.getRg(), foundUser.getTelefone(), foundUser.getAdm());
+    		LoginResponseDTO login = new LoginResponseDTO(foundUser.getId(), foundUser.getNome(),foundUser.getEmail(), foundUser.getRua(), foundUser.getBairro(), foundUser.getCidade(), foundUser.getCpf(), foundUser.getRg(), foundUser.getTelefone(), foundUser.getAdm(), foundUser.getIdParoquia());
     		
     		WrapperResponseDTO<LoginResponseDTO> response = new WrapperResponseDTO<>(true ,"Usuário editado com sucesso!", login);
     		
@@ -168,8 +184,8 @@ public class UserController {
         }
     }
     
-    @GetMapping("/")
-    public List<UserIndexResponse> index(){
+    @GetMapping("/all")
+    public List<UserIndexResponse> indexAll(){
     	
     	List<User> listUser = this.repository.findAll();
     	
@@ -177,7 +193,7 @@ public class UserController {
     	
     	for (User itUser : listUser) {
 
-    		UserIndexResponse currentUser = new UserIndexResponse(itUser.getId(), itUser.getNome(),itUser.getEmail(), itUser.getRua(), itUser.getBairro(), itUser.getCidade(), itUser.getCpf(), itUser.getRg(), itUser.getTelefone());
+    		UserIndexResponse currentUser = new UserIndexResponse(itUser.getId(), itUser.getNome(),itUser.getEmail(), itUser.getRua(), itUser.getBairro(), itUser.getCidade(), itUser.getCpf(), itUser.getRg(), itUser.getTelefone(), itUser.getAdm());
     		
     		listResponse.add(currentUser);
     		
@@ -185,6 +201,62 @@ public class UserController {
     	
     	return listResponse;
     	
+    }
+    
+    @GetMapping("/")
+    public List<UserIndexResponse> indexUser() {
+
+        List<User> listUser = this.repository.findByAdm(0);
+        
+        List<UserIndexResponse> listResponse = new ArrayList<>();
+
+        for (User itUser : listUser) {
+        	
+            UserIndexResponse currentUser = new UserIndexResponse(
+                itUser.getId(),
+                itUser.getNome(),
+                itUser.getEmail(),
+                itUser.getRua(),
+                itUser.getBairro(),
+                itUser.getCidade(),
+                itUser.getCpf(),
+                itUser.getRg(),
+                itUser.getTelefone(),
+                itUser.getAdm()
+            );
+            
+            listResponse.add(currentUser);
+        }
+
+        return listResponse;
+    }
+    
+    @GetMapping("/coordinator")
+    public List<UserIndexResponse> indexCoordinator() {
+
+        // Busca os usuários onde o campo 'adm' é igual a 1
+        List<User> listUser = this.repository.findByAdm(1);
+        
+        List<UserIndexResponse> listResponse = new ArrayList<>();
+
+        for (User itUser : listUser) {
+            UserIndexResponse currentUser = new UserIndexResponse(
+                    itUser.getId(),
+                    itUser.getNome(),
+                    itUser.getEmail(),
+                    itUser.getRua(),
+                    itUser.getBairro(),
+                    itUser.getCidade(),
+                    itUser.getCpf(),
+                    itUser.getRg(),
+                    itUser.getTelefone(),
+                    itUser.getAdm()
+                );
+            
+            listResponse.add(currentUser);
+        }
+
+        return listResponse;
     }
 
 }
