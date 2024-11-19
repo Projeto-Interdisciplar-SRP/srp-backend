@@ -31,11 +31,13 @@ public class ReservationResponseDTO {
     private int quantidade;
     private double preco;
     private Date dataPartida;
+	private String pagamentoStatus;
+	
 	public ReservationResponseDTO(String id, String userId, String userNome, String userEmail, String userRua,
 			String userBairro, String userCidade, String userCpf, String userRg, String userTelefone, int userAdm,
 			String userIdParoquia, String localId, String localNome, String localRua, String localBairro,
 			String localCidade, String busId, String busNumero, String busPlacaOnibus, int quantidade, double preco,
-			Date dataPartida) {
+			Date dataPartida, String pagamentoStatus) {
 		super();
 		this.id = id;
 		this.userId = userId;
@@ -60,7 +62,9 @@ public class ReservationResponseDTO {
 		this.quantidade = quantidade;
 		this.preco = preco;
 		this.dataPartida = dataPartida;
+		this.pagamentoStatus = pagamentoStatus;
 	}
+	
 	public String getId() {
 		return id;
 	}
@@ -199,11 +203,12 @@ public class ReservationResponseDTO {
 	public void setDataPartida(Date dataPartida) {
 		this.dataPartida = dataPartida;
 	}
-    
-	
-    
-    
-	
+	public String getPagamentoStatus() {
+		return pagamentoStatus;
+	}
+	public void setPagamentoStatus(String pagamentoStatus) {
+		this.pagamentoStatus = pagamentoStatus;
+	}
 	
 	
 	

@@ -193,7 +193,7 @@ public class UserController {
     	
     	for (User itUser : listUser) {
 
-    		UserIndexResponse currentUser = new UserIndexResponse(itUser.getId(), itUser.getNome(),itUser.getEmail(), itUser.getRua(), itUser.getBairro(), itUser.getCidade(), itUser.getCpf(), itUser.getRg(), itUser.getTelefone(), itUser.getAdm());
+    		UserIndexResponse currentUser = new UserIndexResponse(itUser.getId(), itUser.getNome(),itUser.getEmail(), itUser.getRua(), itUser.getBairro(), itUser.getCidade(), itUser.getCpf(), itUser.getRg(), itUser.getTelefone(), itUser.getAdm(), itUser.getIdParoquia());
     		
     		listResponse.add(currentUser);
     		
@@ -222,7 +222,8 @@ public class UserController {
                 itUser.getCpf(),
                 itUser.getRg(),
                 itUser.getTelefone(),
-                itUser.getAdm()
+                itUser.getAdm(),
+                itUser.getIdParoquia()
             );
             
             listResponse.add(currentUser);
@@ -250,7 +251,8 @@ public class UserController {
                     itUser.getCpf(),
                     itUser.getRg(),
                     itUser.getTelefone(),
-                    itUser.getAdm()
+                    itUser.getAdm(),
+                    itUser.getIdParoquia()
                 );
             
             listResponse.add(currentUser);

@@ -11,14 +11,15 @@ public class Ticket {
 	private String id_usuario;
 	private Integer quantidade;
 	private float preco;
+	private String status;
 	
-	public Ticket(String id, String id_usuario, Integer quantidade, float preco) {
-		
+	public Ticket(String id, String id_usuario, Integer quantidade, float preco, String status) {
+		super();
 		this.id = id;
 		this.id_usuario = id_usuario;
 		this.quantidade = quantidade;
 		this.preco = preco;
-		
+		this.status = status;
 	}
 
 	public String getId() {
@@ -52,5 +53,15 @@ public class Ticket {
 	public void setPreco(float preco) {
 		this.preco = preco;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
 	
 }
