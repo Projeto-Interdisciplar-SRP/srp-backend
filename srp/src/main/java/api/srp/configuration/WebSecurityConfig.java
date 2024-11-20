@@ -33,15 +33,19 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    // Configura a segurança usando HttpSecurity
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    	
-    	/*
-    	 * O SecurityFilterChain define uma série de filtros de segurança que serão aplicados a todas as requisições HTTP que a sua aplicação recebe.
-    	 * */
-    	
-        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
+        // Desabilitar CSRF (geralmente necessário para APIs)
+        http.csrf().disable()
+
+            // Liberar o acesso a todas as requisições HTTP
+            .authorizeHttpRequests()
+                .anyRequest().permitAll() // Permite todas as requisições sem autenticação
+
+            // Não há necessidade de configurar login e logout se você não precisar de autenticação
+            .and()
+            .formLogin().disable()  // Desabilitar a configuração de login por formulário
+            .logout().disable();    // Desabilitar a configuração de logout
 
         return http.build();
     }
