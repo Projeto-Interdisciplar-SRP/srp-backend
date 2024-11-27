@@ -1,49 +1,66 @@
 package api.srp.model.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Document(collection="bus")
+
 public class Bus {
-	
-	@Id
-	private String id;
-	private String numero;
-	private String placa_onibus;
-	
-	public Bus(String id, String numero, String placa_onibus) {
-		super();
-		this.id = id;
-		this.numero = numero;
-		this.placa_onibus = placa_onibus;
-	}
 
-	public String getId() {
-		return id;
-	}
+    @Id
+    private String id;
+    private int numAssentos;
+    private String placaOnibus;
+    private String nomeMotorista;
+    private String rg;
+    private String cpf;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    // Getters e Setters
+    public String getId() {
+        return id;
+    }
 
-	public String getNumero() {
-		return numero;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
+    public int getNumAssentos() {
+        return numAssentos;
+    }
 
-	public String getPlaca_onibus() {
-		return placa_onibus;
-	}
+    public void setNumAssentos(int numAssentos) {
+        this.numAssentos = numAssentos;
+    }
 
-	public void setPlaca_onibus(String placa_onibus) {
-		this.placa_onibus = placa_onibus;
-	}
-	
-	
-	
-	
-	
+    public String getPlacaOnibus() {
+        return placaOnibus;
+    }
+
+    public void setPlacaOnibus(String placaOnibus) {
+        this.placaOnibus = placaOnibus;
+    }
+
+    public String getNomeMotorista() {
+        return nomeMotorista;
+    }
+
+    public void setNomeMotorista(String nomeMotorista) {
+        this.nomeMotorista = nomeMotorista;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 }

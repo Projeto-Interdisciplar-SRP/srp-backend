@@ -10,7 +10,6 @@ import api.srp.dto.response.WrapperResponseDTO;
 import api.srp.model.entity.Bus;
 import api.srp.model.repository.BusRepository;
 
-
 @RestController
 @RequestMapping("/bus")
 public class BusController {
@@ -33,7 +32,7 @@ public class BusController {
     @GetMapping("/{id}")
     public WrapperResponseDTO<Bus> getBusById(@PathVariable String id) {
         Optional<Bus> bus = repository.findById(id);
-        
+
         if (bus.isPresent()) {
             return new WrapperResponseDTO<Bus>(true, "Ônibus encontrado com sucesso!", bus.get());
         } else {
@@ -43,13 +42,15 @@ public class BusController {
 
     @PutMapping("/update")
     public WrapperResponseDTO<Bus> updateBus(@RequestBody Bus busDetails) {
-
         Optional<Bus> busOptional = repository.findById(busDetails.getId());
 
         if (busOptional.isPresent()) {
             Bus bus = busOptional.get();
-            bus.setNumero(busDetails.getNumero());
-            bus.setPlaca_onibus(busDetails.getPlaca_onibus());
+            bus.setNumAssentos(busDetails.getNumAssentos());
+            bus.setPlacaOnibus(busDetails.getPlacaOnibus());
+            bus.setNomeMotorista(busDetails.getNomeMotorista());
+            bus.setRg(busDetails.getRg());
+            bus.setCpf(busDetails.getCpf());
 
             Bus updatedBus = repository.save(bus);
             return new WrapperResponseDTO<Bus>(true, "Ônibus atualizado com sucesso!", updatedBus);
