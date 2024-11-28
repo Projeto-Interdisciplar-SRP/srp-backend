@@ -12,6 +12,7 @@ public class Travel {
 	private String id;
 	private String id_ingresso;
 	private String	id_paroquia;
+	private String id_paroquia_origem;
 	private String id_onibus;
 	private Date data_partida;
 	

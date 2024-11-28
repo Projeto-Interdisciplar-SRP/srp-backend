@@ -1,0 +1,3 @@
+spring.application.name=srp
+
+spring.datasource.url='jdbc:mongodb://mongo:MjzbIOxBizoqcWNUaSAnpNSfXibtBkWS@autorack.proxy.rlwy.net:43706'

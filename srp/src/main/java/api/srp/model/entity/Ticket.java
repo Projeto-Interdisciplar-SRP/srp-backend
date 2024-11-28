@@ -12,14 +12,16 @@ public class Ticket {
 	private Integer quantidade;
 	private float preco;
 	private String status;
+	private String type;
 	
-	public Ticket(String id, String id_usuario, Integer quantidade, float preco, String status) {
+	public Ticket(String id, String id_usuario, Integer quantidade, float preco, String status, String type) {
 		super();
 		this.id = id;
 		this.id_usuario = id_usuario;
 		this.quantidade = quantidade;
 		this.preco = preco;
 		this.status = status;
+		this.type = type;
 	}
 
 	public String getId() {
@@ -61,6 +63,16 @@ public class Ticket {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
 	
 	
 	
