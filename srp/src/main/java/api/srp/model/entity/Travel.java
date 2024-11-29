@@ -1,99 +1,99 @@
 package api.srp.model.entity;
 
 import java.util.Date;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection="travel")
+@Document(collection = "travel")
 public class Travel {
-	
-	@Id
-	private String id;
-	private String id_ingresso;
-	private String	id_paroquia;
-	private String id_paroquia_origem;
-	private String id_onibus;
-	private Date data_partida;
-	private String id_place;
-	
-	public Travel(String id, String id_ingresso, String id_paroquia, Date data_partida, String id_onibus) {
-		super();
-		this.id = id;
-		this.id_ingresso = id_ingresso;
-		this.id_paroquia = id_paroquia;
-		this.data_partida = data_partida;
-		this.id_onibus = id_onibus;
-	}
 
-	public Travel(String id, String id_ingresso, String id_paroquia, String id_paroquia_origem, String id_onibus,
-			Date data_partida, String id_place) {
-		super();
-		this.id = id;
-		this.id_ingresso = id_ingresso;
-		this.id_paroquia = id_paroquia;
-		this.id_paroquia_origem = id_paroquia_origem;
-		this.id_onibus = id_onibus;
-		this.data_partida = data_partida;
-		this.id_place = id_place;
-	}
+    @Id
+    private String id;
 
-	public String getId() {
-		return id;
-	}
+    @Field("id_ingresso") // Mapeia o campo no banco de dados para id_ingresso
+    private String idIngresso; // Nome da propriedade em camelCase
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    @Field("id_paroquia")
+    private String idParoquia;
 
-	public String getId_ingresso() {
-		return id_ingresso;
-	}
+    @Field("id_paroquia_origem")
+    private String idParoquiaOrigem;
 
-	public void setId_ingresso(String id_ingresso) {
-		this.id_ingresso = id_ingresso;
-	}
+    @Field("id_onibus")
+    private String idOnibus;
 
-	public String getId_paroquia() {
-		return id_paroquia;
-	}
+    @Field("data_partida")
+    private Date dataPartida;
 
-	public void setId_paroquia(String id_paroquia) {
-		this.id_paroquia = id_paroquia;
-	}
+    @Field("id_place")
+    private String idPlace;
 
-	public String getId_paroquia_origem() {
-		return id_paroquia_origem;
-	}
+    public Travel(String id, String idIngresso, String idParoquia, String idParoquiaOrigem, String idOnibus,
+                  Date dataPartida, String idPlace) {
+        super();
+        this.id = id;
+        this.idIngresso = idIngresso;
+        this.idParoquia = idParoquia;
+        this.idParoquiaOrigem = idParoquiaOrigem;
+        this.idOnibus = idOnibus;
+        this.dataPartida = dataPartida;
+        this.idPlace = idPlace;
+    }
 
-	public void setId_paroquia_origem(String id_paroquia_origem) {
-		this.id_paroquia_origem = id_paroquia_origem;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getId_onibus() {
-		return id_onibus;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setId_onibus(String id_onibus) {
-		this.id_onibus = id_onibus;
-	}
+    public String getIdIngresso() {
+        return idIngresso;
+    }
 
-	public Date getData_partida() {
-		return data_partida;
-	}
+    public void setIdIngresso(String idIngresso) {
+        this.idIngresso = idIngresso;
+    }
 
-	public void setData_partida(Date data_partida) {
-		this.data_partida = data_partida;
-	}
+    public String getIdParoquia() {
+        return idParoquia;
+    }
 
-	public String getId_place() {
-		return id_place;
-	}
+    public void setIdParoquia(String idParoquia) {
+        this.idParoquia = idParoquia;
+    }
 
-	public void setId_place(String id_place) {
-		this.id_place = id_place;
-	}
+    public String getIdParoquiaOrigem() {
+        return idParoquiaOrigem;
+    }
 
-	
-	
+    public void setIdParoquiaOrigem(String idParoquiaOrigem) {
+        this.idParoquiaOrigem = idParoquiaOrigem;
+    }
+
+    public String getIdOnibus() {
+        return idOnibus;
+    }
+
+    public void setIdOnibus(String idOnibus) {
+        this.idOnibus = idOnibus;
+    }
+
+    public Date getDataPartida() {
+        return dataPartida;
+    }
+
+    public void setDataPartida(Date dataPartida) {
+        this.dataPartida = dataPartida;
+    }
+
+    public String getIdPlace() {
+        return idPlace;
+    }
+
+    public void setIdPlace(String idPlace) {
+        this.idPlace = idPlace;
+    }
 }

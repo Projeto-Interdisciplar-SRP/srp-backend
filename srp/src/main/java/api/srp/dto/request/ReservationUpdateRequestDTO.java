@@ -8,18 +8,22 @@ public class ReservationUpdateRequestDTO {
 	private String id_paroquia;
 	private Date data_partida;
 	private String id_usuario;
+	private String id_place;
 	private float preco;
 	private Integer quantidade;
+	private String type;
 	
 	public ReservationUpdateRequestDTO(String id_onibus, String id_paroquia, Date data_partida, String id_usuario,
-			float preco, Integer quantidade) {
+			String id_place, float preco, Integer quantidade, String type) {
 		super();
 		this.id_onibus = id_onibus;
 		this.id_paroquia = id_paroquia;
 		this.data_partida = data_partida;
 		this.id_usuario = id_usuario;
+		this.id_place = id_place;
 		this.preco = preco;
 		this.quantidade = quantidade;
+		this.type = type;
 	}
 
 	public String getId_onibus() {
@@ -54,6 +58,14 @@ public class ReservationUpdateRequestDTO {
 		this.id_usuario = id_usuario;
 	}
 
+	public String getId_place() {
+		return id_place;
+	}
+
+	public void setId_place(String id_place) {
+		this.id_place = id_place;
+	}
+
 	public float getPreco() {
 		return preco;
 	}
@@ -69,7 +81,14 @@ public class ReservationUpdateRequestDTO {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 	
 }

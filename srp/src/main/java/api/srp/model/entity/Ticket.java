@@ -2,78 +2,77 @@ package api.srp.model.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection="ticket")
+@Document(collection = "ticket")
 public class Ticket {
 
-	@Id
-	private String id;
-	private String id_usuario;
-	private Integer quantidade;
-	private float preco;
-	private String status;
-	private String type;
-	
-	public Ticket(String id, String id_usuario, Integer quantidade, float preco, String status, String type) {
-		super();
-		this.id = id;
-		this.id_usuario = id_usuario;
-		this.quantidade = quantidade;
-		this.preco = preco;
-		this.status = status;
-		this.type = type;
-	}
+    @Id
+    private String id;
 
-	public String getId() {
-		return id;
-	}
+    @Field("id_usuario") // Mapeia o campo no banco de dados como id_usuario
+    private String idUsuario; // Nome da propriedade em camelCase
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private Integer quantidade;
+    private float preco;
+    private String status;
+    private String type;
 
-	public String getId_usuario() {
-		return id_usuario;
-	}
+    public Ticket(String id, String idUsuario, Integer quantidade, float preco, String status, String type) {
+        super();
+        this.id = id;
+        this.idUsuario = idUsuario;
+        this.quantidade = quantidade;
+        this.preco = preco;
+        this.status = status;
+        this.type = type;
+    }
 
-	public void setId_usuario(String id_usuario) {
-		this.id_usuario = id_usuario;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public Integer getQuantidade() {
-		return quantidade;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
+    public String getIdUsuario() {
+        return idUsuario;
+    }
 
-	public float getPreco() {
-		return preco;
-	}
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-	public void setPreco(float preco) {
-		this.preco = preco;
-	}
+    public Integer getQuantidade() {
+        return quantidade;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public float getPreco() {
+        return preco;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setPreco(float preco) {
+        this.preco = preco;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	
-	
-	
-	
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

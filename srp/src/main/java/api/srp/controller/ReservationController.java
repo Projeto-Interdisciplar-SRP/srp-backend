@@ -1,6 +1,7 @@
 package api.srp.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,11 +14,13 @@ import api.srp.dto.response.ReservationResponseDTO;
 import api.srp.dto.response.WrapperResponseDTO;
 import api.srp.model.entity.Bus;
 import api.srp.model.entity.Local;
+import api.srp.model.entity.Place;
 import api.srp.model.entity.Ticket;
 import api.srp.model.entity.Travel;
 import api.srp.model.entity.User;
 import api.srp.model.repository.BusRepository;
 import api.srp.model.repository.LocalRepository;
+import api.srp.model.repository.PlaceRepository;
 import api.srp.model.repository.TicketRepository;
 import api.srp.model.repository.TravelRepository;
 import api.srp.model.repository.UserRepository;
@@ -41,7 +44,10 @@ public class ReservationController {
 
     @Autowired
     private BusRepository busRepository;
-
+    
+    @Autowired
+    private PlaceRepository placeRepository;
+    
     @PostMapping("/register")
     public WrapperResponseDTO<Object> createReservation(@RequestBody ReservationRequestDTO reservationRequest) {
 
@@ -49,94 +55,74 @@ public class ReservationController {
         Travel travel = reservationRequest.getTravel();
 
         // Verificar existência de `User` relacionado ao `id_usuario` do `Ticket`
-        Optional<User> user = userRepository.findById(ticket.getId_usuario());
+        Optional<User> user = userRepository.findById(ticket.getIdUsuario());
         if (user.isEmpty()) {
-            return new WrapperResponseDTO<>(false, "Usuário com ID " + ticket.getId_usuario() + " não encontrado!", null);
+            return new WrapperResponseDTO<>(false, "Usuário com ID " + ticket.getIdUsuario() + " não encontrado!", null);
         }
         
         // Verificar existência de `Local` relacionado ao `id_paroquia` do `Travel`
-        Optional<Local> local = localRepository.findById(travel.getId_paroquia());
+        Optional<Local> local = localRepository.findById(travel.getIdParoquia());
         if (local.isEmpty()) {
-            return new WrapperResponseDTO<>(false, "Paróquia com ID " + travel.getId_paroquia() + " não encontrada!", null);
+            return new WrapperResponseDTO<>(false, "Paróquia com ID " + travel.getIdParoquia() + " não encontrada!", null);
         }
 
         // Verificar existência de `Bus` relacionado ao `id_onibus` do `Travel`
-        Optional<Bus> bus = busRepository.findById(travel.getId_onibus());
+        Optional<Bus> bus = busRepository.findById(travel.getIdOnibus());
         if (bus.isEmpty()) {
-            return new WrapperResponseDTO<>(false, "Ônibus com ID " + travel.getId_onibus() + " não encontrado!", null);
+            return new WrapperResponseDTO<>(false, "Ônibus com ID " + travel.getIdOnibus() + " não encontrado!", null);
         }
-
+        
+        Optional<Place> place = placeRepository.findById(travel.getIdPlace());
+        if (place.isEmpty()) {
+            return new WrapperResponseDTO<>(false, "Viajem com ID " + travel.getIdPlace() + " não encontrado!", null);
+        }
+        
         // Todos os dados relacionados existem, então podemos salvar
         Ticket savedTicket = ticketRepository.save(ticket);
         
-        travel.setId_ingresso(savedTicket.getId());
+        travel.setIdIngresso(savedTicket.getId());
         
         travelRepository.save(travel);
+        
+        // Construct the DTO with valid data
+        ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(
+            travel.getId(),
+            
+            user.get().getId(),
+            user.get().getNome(),
+            user.get().getEmail(),
+            user.get().getRua(),
+            user.get().getBairro(),
+            user.get().getCidade(),
+            user.get().getCpf(),
+            user.get().getRg(),
+            user.get().getTelefone(),
+            user.get().getAdm(),
+            user.get().getIdParoquia(),
+            
+            local.get().getId(),
+            local.get().getNome(),
+            local.get().getRua(),
+            local.get().getBairro(),
+            local.get().getCidade(),
+            
+            bus.get().getId(),
+            bus.get().getNumero(),
+            bus.get().getPlaca_onibus(),
+            
+            place.get().getDestino(),
+            place.get().getPreco_unitario(),
+            place.get().getIda(),
+            place.get().getVolta(),
+            
+            ticket.getQuantidade(),
+            ticket.getPreco(),
+            travel.getDataPartida(),
+            ticket.getStatus(),
+            ticket.getType()
+        );
 
-        return new WrapperResponseDTO<>(true, "Reserva criada com sucesso!", null);
-    }
-
-
-
-    @GetMapping(value = {"/", ""})
-    public WrapperResponseDTO<List<ReservationResponseDTO>> getAllReservations() {
-        List<Travel> travels = travelRepository.findAll();
-        List<ReservationResponseDTO> reservationResponses = new ArrayList<>();
-
-        for (Travel travel : travels) {
-            // Fetch related entities with null checks
-            Optional<Ticket> ticketOptional = ticketRepository.findById(travel.getId_ingresso());
-            if (ticketOptional.isEmpty()) {
-                continue; // Skip this travel if ticket not found
-            }
-
-            Optional<User> userOptional = userRepository.findById(ticketOptional.get().getId_usuario());
-            if (userOptional.isEmpty()) {
-                continue; // Skip this travel if user not found
-            }
-
-            Optional<Local> localOptional = localRepository.findById(travel.getId_paroquia());
-            if (localOptional.isEmpty()) {
-                continue; // Skip this travel if local not found
-            }
-
-            Optional<Bus> busOptional = busRepository.findById(travel.getId_onibus());
-            if (busOptional.isEmpty()) {
-                continue; // Skip this travel if bus not found
-            }
-
-            // Construct the DTO with valid data
-            ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(
-                travel.getId(),
-                userOptional.get().getId(),
-                userOptional.get().getNome(),
-                userOptional.get().getEmail(),
-                userOptional.get().getRua(),
-                userOptional.get().getBairro(),
-                userOptional.get().getCidade(),
-                userOptional.get().getCpf(),
-                userOptional.get().getRg(),
-                userOptional.get().getTelefone(),
-                userOptional.get().getAdm(),
-                userOptional.get().getIdParoquia(),
-                localOptional.get().getId(),
-                localOptional.get().getNome(),
-                localOptional.get().getRua(),
-                localOptional.get().getBairro(),
-                localOptional.get().getCidade(),
-                busOptional.get().getId(),
-                busOptional.get().getNumero(),
-                busOptional.get().getPlaca_onibus(),
-                ticketOptional.get().getQuantidade(),
-                ticketOptional.get().getPreco(),
-                travel.getData_partida(),
-                ticketOptional.get().getStatus()
-            );
-
-            reservationResponses.add(reservationResponseDTO);
-        }
-
-        return new WrapperResponseDTO<>(true, "Lista de reservas obtida com sucesso!", reservationResponses);
+        return new WrapperResponseDTO<>(true, "Reserva criada com sucesso!", reservationResponseDTO);
     }
 
     @GetMapping("/{id}")
@@ -152,7 +138,7 @@ public class ReservationController {
         Travel travel = travelOptional.get();
 
         // Buscar o Ticket relacionado ao Travel
-        Optional<Ticket> ticketOptional = ticketRepository.findById(travel.getId_ingresso());
+        Optional<Ticket> ticketOptional = ticketRepository.findById(travel.getIdIngresso());
         if (!ticketOptional.isPresent()) {
             return new WrapperResponseDTO<>(false, "Ticket não encontrado para a reserva.", null);
         }
@@ -160,7 +146,7 @@ public class ReservationController {
         Ticket ticket = ticketOptional.get();
 
         // Buscar o User relacionado ao Ticket
-        Optional<User> userOptional = userRepository.findById(ticket.getId_usuario());
+        Optional<User> userOptional = userRepository.findById(ticket.getIdUsuario());
         if (!userOptional.isPresent()) {
             return new WrapperResponseDTO<>(false, "Usuário não encontrado para o Ticket.", null);
         }
@@ -168,7 +154,7 @@ public class ReservationController {
         User user = userOptional.get();
 
         // Buscar o Local relacionado ao Travel
-        Optional<Local> localOptional = localRepository.findById(travel.getId_paroquia());
+        Optional<Local> localOptional = localRepository.findById(travel.getIdParoquia());
         if (!localOptional.isPresent()) {
             return new WrapperResponseDTO<>(false, "Local não encontrado para a reserva.", null);
         }
@@ -176,44 +162,55 @@ public class ReservationController {
         Local local = localOptional.get();
 
         // Buscar o Bus relacionado ao Travel
-        Optional<Bus> busOptional = busRepository.findById(travel.getId_onibus());
+        Optional<Bus> busOptional = busRepository.findById(travel.getIdOnibus());
         if (!busOptional.isPresent()) {
             return new WrapperResponseDTO<>(false, "Ônibus não encontrado para a reserva.", null);
         }
 
         Bus bus = busOptional.get();
 
-        // Criar o DTO de resposta com as informações encontradas
-        ReservationResponseDTO response = new ReservationResponseDTO(
-	        travel.getId(),
-	        user.getId(),
-	        user.getNome(),
-	        user.getEmail(),
-	        user.getRua(),
-	        user.getBairro(),
-	        user.getCidade(),
-	        user.getCpf(),
-	        user.getRg(),
-	        user.getTelefone(),
-	        user.getAdm(),
-	        user.getIdParoquia(),
-	        local.getId(),
-	        local.getNome(),
-	        local.getRua(),
-	        local.getBairro(),
-	        local.getCidade(),
-	        bus.getId(),
-	        bus.getNumero(),
-	        bus.getPlaca_onibus(),
-	        ticket.getQuantidade(),
-	        ticket.getPreco(),
-	        travel.getData_partida(),
-	        ticket.getStatus()
+        Optional<Place> placeOptional = placeRepository.findById(travel.getIdPlace());
+        if (placeOptional.isEmpty()) {
+            return new WrapperResponseDTO<>(false, "Viajem com ID " + travel.getIdPlace() + " não encontrado!", null);
+        }
+
+        // Construct the DTO with valid data
+        ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(
+            travel.getId(),
+            user.getId(),
+            user.getNome(),
+            user.getEmail(),
+            user.getRua(),
+            user.getBairro(),
+            user.getCidade(),
+            user.getCpf(),
+            user.getRg(),
+            user.getTelefone(),
+            user.getAdm(),
+            user.getIdParoquia(),
+            local.getId(),
+            local.getNome(),
+            local.getRua(),
+            local.getBairro(),
+            local.getCidade(),
+            bus.getId(),
+            bus.getNumero(),
+            bus.getPlaca_onibus(),
             
+            placeOptional.get().getDestino(),
+            placeOptional.get().getPreco_unitario(),
+            placeOptional.get().getIda(),
+            placeOptional.get().getVolta(),
+            
+            ticketOptional.get().getQuantidade(),
+            ticketOptional.get().getPreco(),
+            travel.getDataPartida(),
+            ticketOptional.get().getStatus(),
+            ticketOptional.get().getType()
         );
 
         // Retornar a resposta de sucesso com o DTO preenchido
-        return new WrapperResponseDTO<>(true, "Reserva encontrada!", response);
+        return new WrapperResponseDTO<>(true, "Reserva encontrada!", reservationResponseDTO);
     }
 
     @PutMapping("/edit/{id}")
@@ -246,20 +243,25 @@ public class ReservationController {
         }
 
         // Verificar se o Ticket existe antes de atualizá-lo
-        Optional<Ticket> existingTicketOpt = ticketRepository.findById(existingTravel.getId_ingresso());
+        Optional<Ticket> existingTicketOpt = ticketRepository.findById(existingTravel.getIdIngresso());
         if (existingTicketOpt.isEmpty()) {
             return new WrapperResponseDTO<>(false, "Ticket com ID " + existingTravel.getId() + " não encontrado!", null);
+        }
+        
+        Optional<Place> place = placeRepository.findById(existingTravel.getIdPlace());
+        if (place.isEmpty()) {
+            return new WrapperResponseDTO<>(false, "Viajem com ID " + existingTravel.getIdPlace() + " não encontrado!", null);
         }
 
         Ticket existingTicket = existingTicketOpt.get();
 
         // Atualizar os dados de Travel
-        existingTravel.setId_onibus(reservationRequest.getId_onibus());
-        existingTravel.setId_paroquia(reservationRequest.getId_paroquia());
-        existingTravel.setData_partida(reservationRequest.getData_partida());
+        existingTravel.setIdOnibus(reservationRequest.getId_onibus());
+        existingTravel.setIdParoquia(reservationRequest.getId_paroquia());
+        existingTravel.setDataPartida(reservationRequest.getData_partida());
         
         // Atualizar os dados de Ticket
-        existingTicket.setId_usuario(reservationRequest.getId_usuario());
+        existingTicket.setIdUsuario(reservationRequest.getId_usuario());
         existingTicket.setPreco(reservationRequest.getPreco());
         existingTicket.setQuantidade(reservationRequest.getQuantidade());
         
@@ -283,7 +285,7 @@ public class ReservationController {
         Travel travel = travelOptional.get();
 
         // Buscar o Ticket relacionado ao Travel
-        Optional<Ticket> ticketOptional = ticketRepository.findById(travel.getId_ingresso());
+        Optional<Ticket> ticketOptional = ticketRepository.findById(travel.getIdIngresso());
         if (!ticketOptional.isPresent()) {
             return new WrapperResponseDTO<>(false, "Ticket não encontrado para a reserva.", null);
         }
@@ -291,23 +293,19 @@ public class ReservationController {
         Ticket ticket = ticketOptional.get();
 
         // Buscar o User relacionado ao Ticket
-        Optional<User> userOptional = userRepository.findById(ticket.getId_usuario());
+        Optional<User> userOptional = userRepository.findById(ticket.getIdUsuario());
         if (!userOptional.isPresent()) {
             return new WrapperResponseDTO<>(false, "Usuário não encontrado para o Ticket.", null);
         }
 
-        User user = userOptional.get();
-
         // Buscar o Local relacionado ao Travel
-        Optional<Local> localOptional = localRepository.findById(travel.getId_paroquia());
+        Optional<Local> localOptional = localRepository.findById(travel.getIdParoquia());
         if (!localOptional.isPresent()) {
             return new WrapperResponseDTO<>(false, "Local não encontrado para a reserva.", null);
         }
 
-        Local local = localOptional.get();
-
         // Buscar o Bus relacionado ao Travel
-        Optional<Bus> busOptional = busRepository.findById(travel.getId_onibus());
+        Optional<Bus> busOptional = busRepository.findById(travel.getIdOnibus());
         if (!busOptional.isPresent()) {
             return new WrapperResponseDTO<>(false, "Ônibus não encontrado para a reserva.", null);
         }
@@ -327,6 +325,62 @@ public class ReservationController {
 
         // Retornar resposta de sucesso
         return new WrapperResponseDTO<>(true, "Reserva deletada com sucesso!", "Reserva excluída com sucesso.");
+    }
+    
+    @GetMapping("/user/{idUsuario}")
+    public WrapperResponseDTO<List<ReservationResponseDTO>> getTravelsByUser(@PathVariable String idUsuario) {
+        List<ReservationResponseDTO> reservations = new ArrayList<>();
+        
+        List<Ticket> tickets = ticketRepository.findByIdUsuario(idUsuario);
+        
+        for (Ticket ticket : tickets) {
+        	
+            travelRepository.findByIdIngresso(ticket.getId()).forEach(travel -> {
+            	
+                // Assumindo que os métodos para obter `user`, `local`, `bus`, e `placeOptional` já estão implementados
+                User user = userRepository.findById(ticket.getIdUsuario()).orElseThrow();
+                Local local = localRepository.findById(travel.getIdParoquia()).orElseThrow();
+                Bus bus = busRepository.findById(travel.getIdOnibus()).orElseThrow();
+                Optional<Place> placeOptional = placeRepository.findById(travel.getIdPlace());
+                Optional<Ticket> ticketOptional = ticketRepository.findById(travel.getIdIngresso());
+
+                ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(
+                    travel.getId(),
+                    user.getId(),
+                    user.getNome(),
+                    user.getEmail(),
+                    user.getRua(),
+                    user.getBairro(),
+                    user.getCidade(),
+                    user.getCpf(),
+                    user.getRg(),
+                    user.getTelefone(),
+                    user.getAdm(),
+                    user.getIdParoquia(),
+                    local.getId(),
+                    local.getNome(),
+                    local.getRua(),
+                    local.getBairro(),
+                    local.getCidade(),
+                    bus.getId(),
+                    bus.getNumero(),
+                    bus.getPlaca_onibus(),
+                    placeOptional.get().getDestino(),
+                    placeOptional.get().getPreco_unitario(),
+                    placeOptional.get().getIda(),
+                    placeOptional.get().getVolta(),
+                    ticketOptional.get().getQuantidade(),
+                    ticketOptional.get().getPreco(),
+                    travel.getDataPartida(),
+                    ticketOptional.get().getStatus(),
+                    ticketOptional.get().getType()
+                );
+
+                reservations.add(reservationResponseDTO);
+            });
+        }
+
+        return new WrapperResponseDTO<>(true, "Reservas encontradas com sucesso", reservations);
     }
     
 }

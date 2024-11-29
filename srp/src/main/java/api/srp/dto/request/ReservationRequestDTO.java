@@ -28,8 +28,5 @@ public class ReservationRequestDTO {
 	public void setTravel(Travel travel) {
 		this.travel = travel;
 	}
-
-    
-    
     
 }
