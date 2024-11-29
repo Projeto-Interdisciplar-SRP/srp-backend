@@ -5,19 +5,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+
 @Document(collection = "place")
 public class Place {
-
     @Id
     private String id;
+    private String destino;
+    private Date ida;
+    private Date volta;
 
-    private String idParoquia;
-
-    private LocalDateTime ida;
-
-    private LocalDateTime volta;
-
-    // Getters e Setters
+    // Getters e setters
     public String getId() {
         return id;
     }
@@ -26,27 +27,37 @@ public class Place {
         this.id = id;
     }
 
-    public String getIdParoquia() {
-        return idParoquia;
+    public String getDestino() {
+        return destino;
     }
 
-    public void setIdParoquia(String idParoquia) {
-        this.idParoquia = idParoquia;
+    public void setDestino(String destino) {
+        this.destino = destino;
     }
 
-    public LocalDateTime getIda() {
+    public Date getIda() {
         return ida;
     }
 
-    public void setIda(LocalDateTime ida) {
+    public void setIda(Date ida) {
         this.ida = ida;
     }
 
-    public LocalDateTime getVolta() {
+    public Date getVolta() {
         return volta;
     }
 
-    public void setVolta(LocalDateTime volta) {
+    public void setVolta(Date volta) {
+        this.volta = volta;
+    }
+
+    // Construtores
+    public Place() {}
+
+    public Place(String id, String destino, Date ida, Date volta) {
+        this.id = id;
+        this.destino = destino;
+        this.ida = ida;
         this.volta = volta;
     }
 }

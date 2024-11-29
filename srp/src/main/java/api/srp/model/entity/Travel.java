@@ -15,6 +15,7 @@ public class Travel {
 	private String id_paroquia_origem;
 	private String id_onibus;
 	private Date data_partida;
+	private String id_place;
 	
 	public Travel(String id, String id_ingresso, String id_paroquia, Date data_partida, String id_onibus) {
 		super();
@@ -23,6 +24,18 @@ public class Travel {
 		this.id_paroquia = id_paroquia;
 		this.data_partida = data_partida;
 		this.id_onibus = id_onibus;
+	}
+
+	public Travel(String id, String id_ingresso, String id_paroquia, String id_paroquia_origem, String id_onibus,
+			Date data_partida, String id_place) {
+		super();
+		this.id = id;
+		this.id_ingresso = id_ingresso;
+		this.id_paroquia = id_paroquia;
+		this.id_paroquia_origem = id_paroquia_origem;
+		this.id_onibus = id_onibus;
+		this.data_partida = data_partida;
+		this.id_place = id_place;
 	}
 
 	public String getId() {
@@ -49,12 +62,12 @@ public class Travel {
 		this.id_paroquia = id_paroquia;
 	}
 
-	public Date getData_partida() {
-		return data_partida;
+	public String getId_paroquia_origem() {
+		return id_paroquia_origem;
 	}
 
-	public void setData_partida(Date data_partida) {
-		this.data_partida = data_partida;
+	public void setId_paroquia_origem(String id_paroquia_origem) {
+		this.id_paroquia_origem = id_paroquia_origem;
 	}
 
 	public String getId_onibus() {
@@ -64,5 +77,23 @@ public class Travel {
 	public void setId_onibus(String id_onibus) {
 		this.id_onibus = id_onibus;
 	}
+
+	public Date getData_partida() {
+		return data_partida;
+	}
+
+	public void setData_partida(Date data_partida) {
+		this.data_partida = data_partida;
+	}
+
+	public String getId_place() {
+		return id_place;
+	}
+
+	public void setId_place(String id_place) {
+		this.id_place = id_place;
+	}
+
+	
 	
 }

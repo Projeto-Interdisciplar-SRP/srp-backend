@@ -22,6 +22,10 @@ public class Local {
 		this.cidade = cidade;
 	}
 
+	public Local() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getId() {
 		return id;
 	}
