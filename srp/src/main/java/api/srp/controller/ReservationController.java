@@ -124,7 +124,99 @@ public class ReservationController {
 
         return new WrapperResponseDTO<>(true, "Reserva criada com sucesso!", reservationResponseDTO);
     }
+    
+    @GetMapping("/")
+    public WrapperResponseDTO<List<ReservationResponseDTO>> listReservations() {
+        // Buscar todas as reservas (Travel)
+        List<Travel> travels = travelRepository.findAll();
+        
+        // Lista para armazenar as respostas de reserva
+        List<ReservationResponseDTO> reservationList = new ArrayList<>();
 
+        // Verificar se existem viagens
+        if (travels.isEmpty()) {
+            return new WrapperResponseDTO<>(false, "Nenhuma reserva encontrada.", null);
+        }
+
+        for (Travel travel : travels) {
+            // Buscar o Ticket relacionado ao Travel
+            Optional<Ticket> ticketOptional = ticketRepository.findById(travel.getIdIngresso());
+            if (!ticketOptional.isPresent()) {
+                continue; // Pular se o Ticket não for encontrado
+            }
+
+            Ticket ticket = ticketOptional.get();
+
+            // Buscar o User relacionado ao Ticket
+            Optional<User> userOptional = userRepository.findById(ticket.getIdUsuario());
+            if (!userOptional.isPresent()) {
+                continue; // Pular se o User não for encontrado
+            }
+
+            User user = userOptional.get();
+
+            // Buscar o Local relacionado ao Travel
+            Optional<Local> localOptional = localRepository.findById(travel.getIdParoquia());
+            if (!localOptional.isPresent()) {
+                continue; // Pular se o Local não for encontrado
+            }
+
+            Local local = localOptional.get();
+
+            // Buscar o Bus relacionado ao Travel
+            Optional<Bus> busOptional = busRepository.findById(travel.getIdOnibus());
+            if (!busOptional.isPresent()) {
+                continue; // Pular se o Bus não for encontrado
+            }
+
+            Bus bus = busOptional.get();
+
+            // Buscar o Place relacionado ao Travel
+            Optional<Place> placeOptional = placeRepository.findById(travel.getIdPlace());
+            if (!placeOptional.isPresent()) {
+                continue; // Pular se o Place não for encontrado
+            }
+
+            // Construir o DTO de resposta com os dados encontrados
+            ReservationResponseDTO reservationResponseDTO = new ReservationResponseDTO(
+                travel.getId(),
+                user.getId(),
+                user.getNome(),
+                user.getEmail(),
+                user.getRua(),
+                user.getBairro(),
+                user.getCidade(),
+                user.getCpf(),
+                user.getRg(),
+                user.getTelefone(),
+                user.getAdm(),
+                user.getIdParoquia(),
+                local.getId(),
+                local.getNome(),
+                local.getRua(),
+                local.getBairro(),
+                local.getCidade(),
+                bus.getId(),
+                bus.getNumero(),
+                bus.getPlaca_onibus(),
+                placeOptional.get().getDestino(),
+                placeOptional.get().getPreco_unitario(),
+                placeOptional.get().getIda(),
+                placeOptional.get().getVolta(),
+                ticketOptional.get().getQuantidade(),
+                ticketOptional.get().getPreco(),
+                travel.getDataPartida(),
+                ticketOptional.get().getStatus(),
+                ticketOptional.get().getType()
+            );
+
+            reservationList.add(reservationResponseDTO);
+        }
+
+        // Retornar a resposta de sucesso com a lista de DTOs preenchida
+        return new WrapperResponseDTO<>(true, "Reservas encontradas!", reservationList);
+    }
+    
     @GetMapping("/{id}")
     public WrapperResponseDTO<ReservationResponseDTO> getReservation(@PathVariable String id) {
         // Buscar o Travel relacionado ao id fornecido

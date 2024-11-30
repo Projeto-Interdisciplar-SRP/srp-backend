@@ -49,6 +49,9 @@ public class BusController {
 
         if (busOptional.isPresent()) {
             Bus bus = busOptional.get();
+            bus.setNomeMotorista(busDetails.getNomeMotorista());
+            bus.setQuantidadeDeAssento(busDetails.getQuantidadeDeAssento());
+            bus.setRgMotorista(busDetails.getRgMotorista());
             bus.setNumero(busDetails.getNumero());
             bus.setPlaca_onibus(busDetails.getPlaca_onibus());
 
